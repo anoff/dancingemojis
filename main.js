@@ -1,9 +1,9 @@
 // get audio context and set up analyser
-var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-var analyser = audioCtx.createAnalyser();
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioCtx.createAnalyser();
 analyser.fftSize = 2048;
-var bufferLength = analyser.fftSize;
-var dataArray = new Uint8Array(bufferLength);
+const bufferLength = analyser.fftSize;
+const dataArray = new Uint8Array(bufferLength);
 analyser.getByteTimeDomainData(dataArray);
 
 // init the audio source
@@ -34,8 +34,8 @@ if (navigator.getUserMedia) {
 }
 
 // set up canvas context for visualizer
-var canvas = document.querySelector('.visualizer');
-var canvasCtx = canvas.getContext('2d');
+const canvas = document.querySelector('.visualizer');
+const canvasCtx = canvas.getContext('2d');
 
 // start visualizing
 function visualize() {
@@ -43,13 +43,14 @@ function visualize() {
   HEIGHT = canvas.height;
 
   analyser.fftSize = 256;
-  var bufferLength = analyser.frequencyBinCount;
+  const bufferLength = analyser.frequencyBinCount;
   console.log(bufferLength);
-  var dataArray = new Uint8Array(bufferLength);
+  const dataArray = new Uint8Array(bufferLength);
 
   canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
   function draw() {
+    // generate a rainbow color in a range of 0..1
     function generateColor(pct) {
       if (pct > 1) {
         pct = 1;
@@ -68,17 +69,15 @@ function visualize() {
     canvasCtx.fillStyle = '#ffffff';
     canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
-    var barWidth = (WIDTH / bufferLength) * 2.5;
-    var barHeight;
-    var x = 0;
+    const barWidth = (WIDTH / bufferLength) * 2.5;
+    const x = 0;
 
-    for(var i = 0; i < bufferLength; i++) {
-      barHeight = dataArray[i];
+    for(let i = 0; i < bufferLength; i++) {
+      const barX = i * (barWidth + 1);
+      const barHeight = dataArray[i];
 
-      canvasCtx.fillStyle = generateColor(i/bufferLength);
-      canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight/2);
-
-      x += barWidth + 1;
+      canvasCtx.fillStyle = generateColor(i / bufferLength);
+      canvasCtx.fillRect(barX, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
     }
   }
 
