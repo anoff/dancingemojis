@@ -15,18 +15,18 @@ recognition.lang = 'en-US';
 recognition.interimResults = false;
 recognition.maxAlternatives = 3;
 
-document.body.onclick = function() {
-  recognition.start();
-  console.log('Ready to receive a color command.');
-}
+const wordSpan = document.querySelector('.words');
+
+['onaudiostart', 'onaudioend', 'onstart', 'onend', 'onresult', 'onsoundstart', 'onsoundend', 'onspeechstart', 'onspeechend'].forEach(elm => {
+  recognition[elm] = evt => console.log(elm + ' fired');
+});
 
 recognition.onresult = function(event) {
   const latest = event.results[event.results.length - 1];
-  console.log(Array.from(latest).map(e => e.transcript).join(', '))
-}
+  const results = Array.from(latest).map(e => e.transcript);
 
-recognition.onspeechend = function() {
-  //recognition.stop();
+  console.log(results.join(', '));
+  wordSpan.innerHTML = results.join(', ');
 }
 
 recognition.onnomatch = function(event) {
@@ -36,3 +36,7 @@ recognition.onnomatch = function(event) {
 recognition.onerror = function(event) {
   console.log('Error occurred in recognition: ' + event.error);
 }
+
+recognition.start();
+
+

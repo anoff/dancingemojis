@@ -11,4 +11,4 @@ Visualize audio in the browser with emojis. Emojis that fit the audio - well if 
 
 ## License
 
-MIT © (Andreas Offenhaeuser)[http://anoff.io]
+MIT © [Andreas Offenhaeuser](http://anoff.io)
