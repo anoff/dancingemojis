@@ -8,27 +8,14 @@ analyser.getByteTimeDomainData(dataArray);
 
 // init the audio source
 if (navigator.getUserMedia) {
-   console.log('getUserMedia supported.');
-   navigator.getUserMedia (
-      // constraints - only audio needed for this app
-      {
-         audio: true
-      },
-
-      // Success callback
-      function(stream) {
-         source = audioCtx.createMediaStreamSource(stream);
-         source.connect(analyser);
-
-      	 visualize();
-
-      },
-
-      // Error callback
-      function(err) {
-         console.log('The following gUM error occured: ' + err);
-      }
-   );
+  console.log('getUserMedia supported.');
+  navigator.getUserMedia ({ audio: true }, stream => {
+    source = audioCtx.createMediaStreamSource(stream);
+    source.connect(analyser);
+    visualize();
+  }, err => {
+    console.log('The following error occured: ' + err);
+  });
 } else {
    console.log('getUserMedia not supported on your browser!');
 }
@@ -66,7 +53,7 @@ function visualize() {
 
     analyser.getByteFrequencyData(dataArray);
 
-    canvasCtx.fillStyle = '#ffffff';
+    canvasCtx.fillStyle = 'rgb(255, 255, 255)';
     canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
     const barWidth = (WIDTH / bufferLength) * 2.5;
