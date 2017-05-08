@@ -16,6 +16,7 @@ recognition.interimResults = false;
 recognition.maxAlternatives = 3;
 
 const wordSpan = document.querySelector('.words');
+const emojiSpan = document.querySelector('.emojis');
 
 ['onaudiostart', 'onaudioend', 'onstart', 'onend', 'onresult', 'onsoundstart', 'onsoundend', 'onspeechstart', 'onspeechend'].forEach(elm => {
   recognition[elm] = evt => console.log(elm + ' fired');
@@ -27,6 +28,9 @@ recognition.onresult = function(event) {
 
   console.log(results.join(', '));
   wordSpan.innerHTML = results.join(', ');
+
+  const emojis = results[0].split(' ').map(e => emojify(e));
+  emojiSpan.innerHTML = emojis;
 }
 
 recognition.onnomatch = function(event) {
@@ -38,5 +42,3 @@ recognition.onerror = function(event) {
 }
 
 recognition.start();
-
-
