@@ -95,6 +95,17 @@ function generateColor(pct) {
   return 'rgb(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ')';
 }
 
+// random emojis
+//  return an array of emojis
+function getEmoji(count = 1) {
+  const list = ['☺️', '👹', '😱', '👨‍👩‍👦‍👦', '👾', '🦄', '👨‍🎓', '🔥', '🤖', '👯', '💖', '🍻', '🤔', '👀', '🎨', '😄', '😊', '😋', '😌', '😂'];
+  return new Array(count)
+  .fill(0)
+  .map(e => {
+    return list[Math.floor(Math.random() * list.length)];
+  });
+}
+
 // start visualizing
 function visualize() {
 
@@ -103,6 +114,8 @@ function visualize() {
   const dataArray = new Uint8Array(bufferLength);
 
   const filterPoints = initFilter(bufferLength, 23);
+  const emojis = getEmoji(bufferLength);
+
   function draw() {
     const [WIDTH, HEIGHT] = fitScreen();
     analyser.getByteFrequencyData(dataArray);
@@ -126,7 +139,14 @@ function visualize() {
     filtered = filtered.map((e, i) => {
         return [points[i][0], e];
       });
-    drawLine(canvasCtx, filtered);
+    // drawLine(canvasCtx, filtered);
+    for (let i = 0; i < filtered.length; i++) {
+      const p = filtered[i];
+      // put dancing emoji
+      //canvasCtx.text
+      canvasCtx.font = "2em Arial";
+      canvasCtx.fillText(emojis[i], p[0], p[1]);
+    }
   }
 
   setInterval(() => requestAnimationFrame(draw), 10);
