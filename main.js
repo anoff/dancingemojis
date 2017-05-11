@@ -30,6 +30,21 @@ function fitScreen() {
   canvas.height = window.innerHeight / 2;
   return [canvas.width, canvas.height]
 }
+
+// draw line to canvas
+//  points should be arrays of [x, y]
+function drawLine(ctx, points) {
+  const WIDTH = ctx.width;
+  const start = points.splice(0, 1);
+  ctx.beginPath();
+  ctx.lineWidth = 3;
+  ctx.moveTo(...start[0]);
+  for (const p of points) {
+    ctx.lineTo(...p);
+  }
+  ctx.stroke();
+}
+
 // start visualizing
 function visualize() {
 
@@ -51,22 +66,23 @@ function visualize() {
       const b = Math.sin(pct * 4 * Math.PI + 4 * Math.PI / 3) * 127 + 128;
       return 'rgb(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ')';
     }
-    drawVisual = requestAnimationFrame(draw);
-
     analyser.getByteFrequencyData(dataArray);
 
     canvasCtx.fillStyle = 'rgb(255, 255, 255)';
     canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
     const barWidth = (WIDTH / bufferLength) * 2.5;
+    const points = [];
     for(let i = 0; i < bufferLength; i++) {
       const barX = i * (barWidth + 1);
       const barHeight = dataArray[i] / 255 * HEIGHT;
 
       canvasCtx.fillStyle = generateColor(i / bufferLength);
       canvasCtx.fillRect(barX, HEIGHT, barWidth, -barHeight);
+      points.push([barX + barWidth / 2, HEIGHT - barHeight]);
     }
+    drawLine(canvasCtx, points);
   }
 
-  draw();
+  setInterval(() => requestAnimationFrame(draw), 10);
 }
