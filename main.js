@@ -24,19 +24,21 @@ if (navigator.getUserMedia) {
 const canvas = document.querySelector('.visualizer');
 const canvasCtx = canvas.getContext('2d');
 
+// resize
+function fitScreen() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight / 2;
+  return [canvas.width, canvas.height]
+}
 // start visualizing
 function visualize() {
-  WIDTH = canvas.width;
-  HEIGHT = canvas.height;
 
-  analyser.fftSize = 256;
+  analyser.fftSize = 512;
   const bufferLength = analyser.frequencyBinCount;
-  console.log(bufferLength);
   const dataArray = new Uint8Array(bufferLength);
 
-  canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-
   function draw() {
+    const [WIDTH, HEIGHT] = fitScreen();
     // generate a rainbow color in a range of 0..1
     function generateColor(pct) {
       if (pct > 1) {
@@ -57,14 +59,12 @@ function visualize() {
     canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
     const barWidth = (WIDTH / bufferLength) * 2.5;
-    const x = 0;
-
     for(let i = 0; i < bufferLength; i++) {
       const barX = i * (barWidth + 1);
-      const barHeight = dataArray[i];
+      const barHeight = dataArray[i] / 255 * HEIGHT;
 
       canvasCtx.fillStyle = generateColor(i / bufferLength);
-      canvasCtx.fillRect(barX, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
+      canvasCtx.fillRect(barX, HEIGHT, barWidth, -barHeight);
     }
   }
 
