@@ -27,7 +27,7 @@ const canvasCtx = canvas.getContext('2d');
 // resize
 function fitScreen() {
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight / 2;
+  canvas.height = window.innerHeight;
   return [canvas.width, canvas.height]
 }
 
@@ -113,6 +113,7 @@ function visualize() {
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
 
+  // filter each bar with moving average on 23 values
   const filterPoints = initFilter(bufferLength, 23);
   const emojis = getEmoji(bufferLength);
 
@@ -139,7 +140,7 @@ function visualize() {
     filtered = filtered.map((e, i) => {
         return [points[i][0], e];
       });
-    // drawLine(canvasCtx, filtered);
+    // drawLine(canvasCtx, filtered); // uncomment this one to draw a bezier line of median
     for (let i = 0; i < filtered.length; i++) {
       const p = filtered[i];
       // put dancing emoji
