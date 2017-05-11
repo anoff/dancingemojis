@@ -100,7 +100,7 @@ function visualize() {
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
 
-  const filterPoints = initFilter(bufferLength, 50);
+  const filterPoints = initFilter(bufferLength, 23);
   function draw() {
     const [WIDTH, HEIGHT] = fitScreen();
     analyser.getByteFrequencyData(dataArray);
