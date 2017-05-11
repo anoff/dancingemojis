@@ -35,12 +35,14 @@ function fitScreen() {
 //  points should be arrays of [x, y]
 function drawLine(ctx, points) {
   const WIDTH = ctx.width;
-  const start = points.splice(0, 1);
   ctx.beginPath();
-  ctx.lineWidth = 3;
-  ctx.moveTo(...start[0]);
-  for (const p of points) {
-    ctx.lineTo(...p);
+  ctx.strokeStyle = 'rgb(69, 69, 69)';
+  ctx.lineWidth = 2;
+  ctx.moveTo(0, points[0][1]);
+  for (let i = 1; i < points.length; i += 2) {
+    const bezP = points[i - 1];
+    const endP = points[i];
+    ctx.quadraticCurveTo(bezP[0], bezP[1], endP[0], endP[1]);
   }
   ctx.stroke();
 }
