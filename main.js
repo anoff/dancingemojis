@@ -98,7 +98,7 @@ function generateColor(pct) {
 // random emojis
 //  return an array of emojis
 function getEmoji(count = 1) {
-  const list = ['☺️', '👹', '😱', '👨‍👩‍👦‍👦', '👾', '🦄', '👨‍🎓', '🔥', '🤖', '👯', '💖', '🍻', '🤔', '👀', '🎨', '😄', '😊', '😋', '😌', '😂'];
+  const list = ['👹', '😱', '👨‍👩‍👦‍👦', '👾', '🦄', '👨‍🎓', '🔥', '🤖', '👯', '💖', '🍻', '🤔', '👀', '🎨', '😄', '😊', '😋', '😌', '😂', '💩', '👽', '👻', '😻', '😅', '👽', '🔥', '🚀', '👻', '⛄', '👾', '🍔', '😄', '🍰', '🐑', '💩', '👺', '🐢', '🙈', '🙉', '🙊', '🍣', '🍕', '🍒', '🍺', '⛩', '🌊', '🍜', '🍱'];
   return new Array(count)
   .fill(0)
   .map(e => {
@@ -143,9 +143,10 @@ function visualize() {
     for (let i = 0; i < filtered.length; i++) {
       const p = filtered[i];
       // put dancing emoji
-      //canvasCtx.text
-      canvasCtx.font = "2em Arial";
-      canvasCtx.fillText(emojis[i], p[0], p[1]);
+      if (p[1] < HEIGHT) { // only show if there is a bar
+        canvasCtx.font = `${barWidth}px Arial`;
+        canvasCtx.fillText(emojis[i], p[0] - barWidth / 2, p[1] + barWidth / 2);
+      }
     }
   }
 
