@@ -1,10 +1,6 @@
 // get audio context and set up analyser
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioCtx.createAnalyser();
-analyser.fftSize = 2048;
-const bufferLength = analyser.fftSize;
-const dataArray = new Uint8Array(bufferLength);
-analyser.getByteTimeDomainData(dataArray);
 
 // init the audio source
 if (navigator.getUserMedia) {
@@ -80,12 +76,12 @@ function getEmoji(count = 1) {
 // start visualizing
 function visualize() {
 
-  analyser.fftSize = 256;
+  analyser.fftSize = 128;
   const bufferLength = analyser.frequencyBinCount;
   const dataArray = new Uint8Array(bufferLength);
 
   // filter each bar with moving average on 23 values
-  const filterPoints = initFilter(bufferLength, 23);
+  const filterPoints = initFilter(bufferLength, 17);
   const emojis = getEmoji(bufferLength);
 
   function draw() {
@@ -118,7 +114,7 @@ function visualize() {
         canvasCtx.fillText(emojis[i], p[0] - barWidth / 2, height);
       }
     }
+    requestAnimationFrame(draw);
   }
-
-  setInterval(() => requestAnimationFrame(draw), 10);
+  draw();
 }
