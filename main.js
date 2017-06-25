@@ -35,35 +35,18 @@ function fitScreen() {
 // filter points array
 //  moving average of _width_
 function initFilter(pointsCount, width) {
-  const values = new Array(pointsCount);
-  for (let i = 0; i < pointsCount; i++) {
-    values[i] = new Array(width);
-  }
-
-  function mean(vals) {
-    let cnt = 0;
-    let sum = 0;
-    for (const v of vals) {
-      if (typeof v === 'number') {
-        sum += v;
-        cnt++;
-      }
-    }
-    if (cnt === 0) {
-      return 0;
-    }
-    return sum / cnt;
-  }
+  let values = new Array(pointsCount).fill(0);
+  let lastUpdate = Date.now();
   return points => {
-    const means = [];
-    // shift stuff around in the cached array
-    for (let i = 0; i < values.length; i++) {
-      const v = values[i];
-      v.shift();
-      v.push(points[i]);
-      means.push(mean(v));
-    }
-    return means;
+    const now = Date.now();
+    const elapsedTime = now - lastUpdate;
+    // smooth each element
+    values = values.map((e, i) => {
+      e += elapsedTime * ( points[i] - e ) / 123;
+      return e;
+    });
+    lastUpdate = now;
+    return values;
   }
 }
 
