@@ -11,7 +11,8 @@ Visualize audio in the browser with emojis. ~~Emojis that fit the audio - well i
 
 ## Issues
 
-Sucks on mobile, should try out http://www.pixijs.com/ for faster drawing.
+* [x] ~~Sucks on mobile, should try out http://www.pixijs.com/ for faster drawing.~~~
+    * solved to some extent by new filtering method
 
 ## License
 
