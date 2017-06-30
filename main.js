@@ -1,8 +1,3 @@
-// set up fps
-var stats = new Stats();
-stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-//document.body.appendChild( stats.domElement );
-
 // get audio context and set up analyser
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioCtx.createAnalyser();
