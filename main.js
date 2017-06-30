@@ -69,7 +69,6 @@ function visualize() {
 
   function draw() {
     canvas.style = "display: none";
-    stats.begin();
     const [WIDTH, HEIGHT] = fitScreen();
     analyser.getByteFrequencyData(dataArray);
 
@@ -100,7 +99,6 @@ function visualize() {
       }
     }
     requestAnimationFrame(draw);
-    stats.end();
     canvas.style = "display: block";
   }
   draw();
